@@ -1,8 +1,21 @@
 
 import * as React from 'react';
-import Search from './Search';
-import ListStories from './ListStories'
+// import Search from './Search';
+import InputWithLabel from './InputWithLabel';
+import ListStories from './ListStories';
 
+
+const useSemiPersistentState = (key, initialState) => {
+  const [value, setValue] = React.useState(
+    localStorage.getItem(key) || initialState
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem(key, value);
+  }, [value, key]);
+
+  return [value, setValue];
+};
 
 const App = () => {
   const stories = [
@@ -34,10 +47,24 @@ const App = () => {
   ];
 
   //const [searchTerm, setSearchTerm] = React.useState('');
-  const [searchTerm, setSearchTerm] = React.useState('React');
+  // const [searchTerm, setSearchTerm] = React.useState('React');
+  // const [searchTerm, setSearchTerm] = React.useState(
+  //   localStorage.getItem('search') || 'React'
+  //   );
+
+  //   React.useEffect(() => {
+  //     localStorage.setItem('search', searchTerm);
+  //     }, [searchTerm]);
+
+  const [searchTerm, setSearchTerm] = useSemiPersistentState(
+    'search',
+    'React'
+  );
 
   const handleSearch = (event) => {
+    // setSearchTerm(event.target.value);
     setSearchTerm(event.target.value);
+    //localStorage.setItem('search', event.target.value);
   };
 
   const searchedStories = stories.filter((story) =>
@@ -49,7 +76,17 @@ const App = () => {
       <h1>My Hacker Stories</h1>
 
       {/* <Search onSearch={handleSearch} searchterm={searchTerm}/> */}
-      <Search onSearch={handleSearch} search={searchTerm}/> 
+      {/* <Search onSearch={handleSearch} search={searchTerm}/>  */}
+
+      {/* Reusable components */}
+
+      <InputWithLabel
+        id="search"
+        label="Search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
+
 
       <hr />
 
