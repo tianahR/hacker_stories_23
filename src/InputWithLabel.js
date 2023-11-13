@@ -12,15 +12,17 @@
 //   );
 // export default Search; 
 
+// React component composition , using react prop children
+
 const InputWithLabel = ({
     id,
-    label,
+    children,
     value,
     type = 'text',
     onInputChange,
   }) => (
     <>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{children}</label>
       &nbsp;
       <input
         id={id}
