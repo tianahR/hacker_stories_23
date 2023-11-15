@@ -92,8 +92,11 @@ const App = () => {
       <InputWithLabel
         id="search"
         value={searchTerm}
-        onInputChange={handleSearch}>
-          <strong> Search:</strong>
+        isFocused
+        onInputChange={handleSearch}
+      >
+          <strong> Search:</strong> 
+
       </InputWithLabel>
         
       
