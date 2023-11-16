@@ -1,12 +1,16 @@
-const ListStories = ({list}) => (
+const ListStories = ({list,onRemoveItem}) => (
     <ul>
       {list.map((item) => (
-        <Item key={item.objectID} item={item} />
+        <Item 
+          key={item.objectID} 
+          item={item} 
+          onRemoveItem={onRemoveItem}
+        />
       ))}
     </ul>
   );
   
-  const Item = ({item}) => (
+  const Item = ({item, onRemoveItem}) => (
     <li>
       <span>
         <a href={item.url}>{item.title}</a>
@@ -14,6 +18,12 @@ const ListStories = ({list}) => (
       <span>{item.author}</span>
       <span>{item.num_comments}</span>
       <span>{item.points}</span>
+      <span>
+      <button type="button" onClick={() => onRemoveItem(item)}>
+        Done
+      </button>
+
+      </span>
     </li>
   );
   export default ListStories;
