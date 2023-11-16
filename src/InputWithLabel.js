@@ -1,3 +1,5 @@
+import * as React from 'react';
+// import Search from '.
 // const Search = ({search,onSearch}) => (
 //     <>
 //       <label htmlFor="search">Search: </label>
@@ -12,23 +14,37 @@
 //   );
 // export default Search; 
 
+// React component composition , using react prop children
+
 const InputWithLabel = ({
     id,
-    label,
+    children,
     value,
     type = 'text',
     onInputChange,
-  }) => (
+    isFocused
+  }) => {
+
+    const inputRef = React.useRef();
+
+    React.useEffect(() => {
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isFocused]);
+    
+    return (
     <>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>{children}</label>
       &nbsp;
       <input
         id={id}
+        ref={inputRef}
         type={type}
         value={value}
         onChange={onInputChange}
       />
     </>
-  );
+  )};
 
   export default InputWithLabel;
