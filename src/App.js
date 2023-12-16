@@ -1,8 +1,10 @@
 
 import * as React from 'react';
 // import Search from './Search';
-import InputWithLabel from './InputWithLabel';
+// import InputWithLabel from './InputWithLabel';
 import ListStories from './ListStories';
+import SearchForm from './SearchForm';
+import axios from 'axios';
 
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
@@ -77,9 +79,12 @@ const App = () => {
       setSearchTerm(event.target.value);
     };
 
-    const handleSearchSubmit = () => {
-      setUrl(`${API_ENDPOINT}${searchTerm}`);
-    };
+    const handleSearchSubmit = (event) => {
+       setUrl(`${API_ENDPOINT}${searchTerm}`);
+       event.preventDefault();
+     };
+
+    
 
 
 const [stories, dispatchStories] = React.useReducer(
@@ -88,23 +93,28 @@ const [stories, dispatchStories] = React.useReducer(
 );
 
 
-const handleFetchStories = React.useCallback(() => {
+const handleFetchStories = React.useCallback(async () => {
    
     // if (!searchTerm) return;
 
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
+
+    try{
+      const result = await axios.get(url);
     
-    fetch(url)
-      .then((response) => response.json())
-      .then((result) => {
+    
       dispatchStories({
         type: 'STORIES_FETCH_SUCCESS',
-        payload: result.hits,
-    });
-    })
-    .catch(() =>
-      dispatchStories({ type: 'STORIES_FETCH_FAILURE' })
-    );
+        payload: result.data.hits,
+        });
+
+    }
+    catch {
+      dispatchStories({ type: 'STORIES_FETCH_FAILURE' });
+    }
+
+    
+      
   }, [url]); 
 
 React.useEffect(() => {
@@ -127,26 +137,11 @@ React.useEffect(() => {
     <div>
       <h1>My Hacker Stories</h1>
 
-      <InputWithLabel
-        id="search"
-        value={searchTerm}
-        isFocused
-        onInputChange={handleSearchInput}
-      >
-          <strong> Search:</strong> 
-
-      </InputWithLabel>
-
-      <button
-          type="button"
-          disabled={!searchTerm}
-          onClick={handleSearchSubmit}
-      >
-        Submit
-      </button>
-
-        
-      
+      <SearchForm
+          searchTerm={searchTerm}
+          onSearchInput={handleSearchInput}
+          onSearchSubmit={handleSearchSubmit}
+      />
 
 
       <hr />
