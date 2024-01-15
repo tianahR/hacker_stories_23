@@ -5,6 +5,26 @@ import * as React from 'react';
 import ListStories from './ListStories';
 import SearchForm from './SearchForm';
 import axios from 'axios';
+// import styles from './App.module.css'; // CSS module - CSS in css 
+//  import './App.css';
+import styled from 'styled-components'; // Styled Component - CSS IN JS 
+// import { ReactComponent as Check } from './check-square-svgrepo-com.svg';
+
+
+const StyledContainer = styled.div`
+height: 100vw;
+padding: 20px;
+background: #83a4d4;
+background: linear-gradient(to left, #b6fbff, #83a4d4);
+color: #171212;
+`;
+
+const StyledHeadlinePrimary = styled.h1`
+font-size: 48px;
+font-weight: 300;
+letter-spacing: 2px;
+`;
+
 
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
@@ -134,28 +154,41 @@ React.useEffect(() => {
 
 
   return (
-    <div>
-      <h1>My Hacker Stories</h1>
 
-      <SearchForm
-          searchTerm={searchTerm}
-          onSearchInput={handleSearchInput}
-          onSearchSubmit={handleSearchSubmit}
-      />
+    <StyledContainer>
 
+          <StyledHeadlinePrimary>My Hacker Stories</StyledHeadlinePrimary>
 
-      <hr />
+                {/* <div className={styles.container}> */}
+                {/* <h1 className="headline-primary">My Hacker Stories</h1> */}
+                {/* <h1 className={styles.headlinePrimary}>My Hacker Stories</h1> */}
 
-      {stories.isError && <p>Something went wrong ...</p>}
-
-      {stories.isLoading ? (
-          <p>Loading ...</p>
-      ) : (<ListStories 
-            list={stories.data}
-            onRemoveItem={handleRemoveStory}
+          <SearchForm
+              searchTerm={searchTerm}
+              onSearchInput={handleSearchInput}
+              onSearchSubmit={handleSearchSubmit}
           />
-      )}
-    </div>
+
+
+          {/* <hr /> */}
+
+          {stories.isError && <p>Something went wrong ...</p>}
+
+          {stories.isLoading ? (
+              <p>Loading ...</p>
+          ) : (<ListStories 
+                list={stories.data}
+                onRemoveItem={handleRemoveStory}
+              />
+          )}
+                {/* </div> */}
+
+
+          
+
+        
+    </StyledContainer>
+   
   );
 };
 
